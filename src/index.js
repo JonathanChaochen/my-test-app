@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-const element = React.createElement('h1', { className: 'greeting' }, 'Hello, new World');
+const element = React.createElement('h1', { className: 'greeting' }, 'Hello, Second World');
 ReactDOM.render(element, document.getElementById('root'));
 registerServiceWorker();
 
