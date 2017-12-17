@@ -9,14 +9,18 @@ class Game extends Component {
       history: [
         {
           squares: Array(9).fill(null),
+          position: null,
         },
       ],
       xIsNext: true,
       stepNumber: 0,
+      ascendingOrder: true,
     };
   }
 
   handleClick(i) {
+    const locationOfMove = [[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]];
+
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     // current is same as using this.state.stepNumber
     const current = history[history.length - 1];
@@ -30,6 +34,7 @@ class Game extends Component {
       history: history.concat([
         {
           squares,
+          position: locationOfMove[i],
         },
       ]),
       stepNumber: history.length,
@@ -46,16 +51,27 @@ class Game extends Component {
     });
   }
 
+  toggleOrder() {
+    this.setState({
+      ascendingOrder: !this.state.ascendingOrder,
+    });
+  }
+
   render() {
     const { history } = this.state;
     const current = history[history.length - 1];
     const winner = calculateWinner(current.squares);
 
-    const moves = history.map((step, move) => {
-      const desc = move ? `Go to move # ${move}` : 'Go to game Start';
+    const moves = history.map((step, index) => {
+      const bold = index === this.state.stepNumber ? 'bold' : '';
+      const desc = index
+        ? `Go to move # ${index}, Position: (${step.position})`
+        : 'Go to game Start';
       return (
-        <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+        <li key={index}>
+          <button className={bold} onClick={() => this.jumpTo(index)}>
+            {desc}
+          </button>
         </li>
       );
     });
@@ -67,6 +83,11 @@ class Game extends Component {
       status = `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
     }
 
+    // Add a toggle button that lets you sort the moves in either ascending or descending order.
+    if (!this.state.ascendingOrder) {
+      moves.sort((a, b) => b.key - a.key);
+    }
+
     return (
       <div className="game">
         <div className="game-board">
@@ -75,6 +96,7 @@ class Game extends Component {
         <div className="game-info">
           <div>{status}</div>
           <ol>{moves}</ol>
+          <button onClick={() => this.toggleOrder()}>toggle order</button>
         </div>
       </div>
     );
