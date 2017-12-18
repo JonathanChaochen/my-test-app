@@ -78,7 +78,9 @@ class Game extends Component {
 
     let status;
     if (winner) {
-      status = `Winner is ${winner}`;
+      current.squares.winSquare = winner[3];
+      console.log(current.squares.winSquare);
+      status = `Winner is ${winner[0]}`;
     } else {
       status = `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
     }
@@ -120,7 +122,7 @@ function calculateWinner(squares) {
     const [a, b, c] = lines[i];
     // checking do we have a winner or return null
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return [squares[a], squares[b], squares[c], lines[i]];
     }
   }
   return null;
