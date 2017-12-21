@@ -22,9 +22,8 @@ export default class Board extends React.Component {
     for (let i = 0; i < 3; i += 1) {
       row = [];
       for (let j = 0; j < 3; j += 1) {
-        k = i * 3 + j;
+        k = (i * 3) + j;
         if (this.props.squares.winSquare) {
-          console.log(this.props.squares.winSquare);
           win = this.props.squares.winSquare.indexOf(k) !== -1;        
         }
         row.push(this.renderSquare(k, win));
